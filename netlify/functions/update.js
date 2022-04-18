@@ -1,60 +1,25 @@
-import sendMessage from '../../sendMessage';
-import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set, onValue } from 'firebase/database';
+const { writeUserData, sendAvailableSlots } = require('../../utils/firebase');
+const { Telegraf } = require('telegraf');
 
-// import { sendMessage } from '../../sendMessage';
-// import { initializeApp } from 'firebase/app';
-// import { getDatabase, ref, set } from 'firebase/database';
+const bot = new Telegraf(process.env.BOT_TOKEN);
+bot.start((ctx) => {
+  const { id, is_bot: isBot, first_name: firstName, last_name: lastName } = ctx.from;
+  writeUserData(id);
+  ctx.reply(`Welcome, ${id}: ${firstName} ${lastName}. You are ${isBot ? '' : 'not a'} bot`);
+  ctx.reply('👍');
+});
+bot.help((ctx) => ctx.reply('Send me a sticker'));
 
-//curl -F "url=https://bot-0071.netlify.app/.netlify/functions/update" https://api.telegram.org/bot5321221901:AAE9oBfGqYxtozpi7WcNf0HqYDUm05XPoBU/setWebhook
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'))
+process.once('SIGTERM', () => bot.stop('SIGTERM'))
 
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: `${process.env.FIREBASE_PROJECT_ID}.firebaseapp.com`,
-  databaseURL: 'bot-test-visa-default-rtdb.europe-west1.firebasedatabase.app',
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: `${process.env.FIREBASE_PROJECT_ID}.appspot.com`,
-  messagingSenderId: process.env.FIREBASE_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-};
+//curl -F "url=https://bot-0071.netlify.app/.netlify/functions/update" https://api.telegram.org/bot5321221901:AAE9oBfGqYxtozpi7WcNf0HqYDUm05XPoBU/setWebhook?url=https://bot-0071.netlify.app/.netlify/functions/update/api/update
 
-// Initialize Firebase
-initializeApp(firebaseConfig);
-const db = getDatabase();
-
-const writeUserData = (chatId) => {
-  set(ref(db, 'users/' + chatId), {
-    chat_id: chatId,
-  });
-};
-
-export const handler = async (event) => {
+exports.handler = async (event) => {
   const { message } = JSON.parse(event.body);
-  writeUserData(message.chat.id);
 
-  const users = ref(db, 'users');
-  // users.forEach(user => {
-  // })
-
-  onValue(
-    users,
-    (snapshot) => {
-      snapshot.forEach(async (childSnapshot) => {
-        const childKey = childSnapshot.key;
-        const childData = childSnapshot.val();
-        console.log(childKey);
-        console.log(childData);
-
-        await sendMessage(childKey, message.text);
-      });
-    },
-    {
-      onlyOnce: true,
-    }
-  );
-
-  await sendMessage(message.chat.id, message.text);
-
+  await sendAvailableSlots((chatId) => bot.telegram.sendMessage(chatId, message.text));
   console.log('Received an update from Telegram!', event.body);
 
   return { statusCode: 200 };
