@@ -1,4 +1,7 @@
-import { bot } from './telegraf';
+const { Telegraf } = require('telegraf');
+const bot = new Telegraf(process.env.BOT_TOKEN);
+const express = require('express');
+const app = express();
 
 bot.start((ctx) => {
   const { id, is_bot: isBot, first_name: firstName, last_name: lastName } = ctx.from;
@@ -15,3 +18,9 @@ bot.launch();
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, function () {
+  console.log(`Server is running at port ${PORT}`);
+});
