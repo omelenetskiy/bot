@@ -20,7 +20,7 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'))
 
 //curl -F "url=https://bot-0071.netlify.app/.netlify/functions/update" https://api.telegram.org/bot5321221901:AAE9oBfGqYxtozpi7WcNf0HqYDUm05XPoBU/setWebhook?url=https://bot-0071.netlify.app/.netlify/functions/update
 
-exports.handler = async () => {
+exports.handler = () => {
   console.log(`Telegram bot successfully initialized ${process.env.BOT_TOKEN}`);
   return { statusCode: 200 };
 };
