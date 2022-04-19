@@ -13,7 +13,13 @@ app.get('/api/:id', (req, res) => {
 
 app.get('/visa', (req, res) => {
   const { chat_id, city } = req.query;
-  bot.telegram.sendMessage(chat_id, `Появилась дата в ${city}`);
+  bot.telegram.sendMessage(
+    chat_id,
+    `Появились места на подачу VISA! ${city} 
+  https://visa.vfsglobal.com/blr/ru/pol/login
+  или 
+  https://visa.vfsglobal.com/blr/ru/pol/book-an-appointment`
+  );
 });
 
 bot.start((ctx) => {
