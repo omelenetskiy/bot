@@ -5,18 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node bot.js",
-    "netlify:dev": "netlify dev"
+    "start": "node bot.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.0",
-    "firebase": "^9.6.11",
-    "node-telegram-bot-api": "^0.56.0",
     "telegraf": "^4.7.0"
   },
-  "devDependencies": {
-    "netlify-cli": "^9.16.6"
+  "engines": {
+    "node": "17.0",
+    "npm": "8.1"
   }
 }
