@@ -12,7 +12,7 @@ bot.on('text', (ctx) => ctx.replyWithHTML('<b>Hello</b>'));
 
 bot.launch();
 
-exports.botInstance = bot;
+// exports.botInstance = bot;
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'))
