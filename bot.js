@@ -1,6 +1,4 @@
-const { Telegraf } = require('telegraf');
-
-const bot = new Telegraf(process.env.BOT_TOKEN, { polling: true });
+import { bot } from './telegraf';
 
 bot.start((ctx) => {
   const { id, is_bot: isBot, first_name: firstName, last_name: lastName } = ctx.from;
