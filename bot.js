@@ -5,11 +5,15 @@ const app = express();
 
 //323160304
 
-app.get('/api/:id', async function (req, res) {
+app.get('/api/:id', function (req, res) {
   // Retrieve the tag from our URL path
   var id = req.params.id;
 
   bot.telegram.sendMessage(id, `Ti pidrilla!`);
+});
+
+app.get('/visa', function (req, res) {
+  console.log(JSON.stringify(req.query));
 });
 
 bot.start((ctx) => {
