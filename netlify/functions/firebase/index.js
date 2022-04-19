@@ -1,6 +1,6 @@
-const { initializeApp } = require('firebase/app')
 const { getDatabase, ref, set, onValue } = require('firebase/database');
 
+const { initializeApp } = require('firebase/app')
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -14,11 +14,14 @@ const firebaseConfig = {
 
 // Initialize Firebase
 initializeApp(firebaseConfig);
+
 const db = getDatabase();
 
-exports.writeUserData = (chatId) => {
+exports.writeUserData = (chatId, firstName, lastName) => {
   set(ref(db, 'users/' + chatId), {
     chat_id: chatId,
+    first_name: firstName,
+    last_name: lastName
   });
 };
 
@@ -27,12 +30,11 @@ const users = ref(db, 'users');
 exports.sendAvailableSlots = (sendMessage) => onValue(
   users,
   (snapshot) => {
-    snapshot.forEach(async (childSnapshot) => {
+    snapshot.forEach((childSnapshot) => {
       const childKey = childSnapshot.key;
       const childData = childSnapshot.val();
       console.log(childKey);
       console.log(childData);
-
       sendMessage(childKey);
     });
   },
