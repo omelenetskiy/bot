@@ -9,8 +9,7 @@ app.get('/api/:id', async function (req, res) {
   // Retrieve the tag from our URL path
   var id = req.params.id;
 
-  bot.telegram.sendMessage(323160304, `File content at ${id}`);
-  console.log(id);
+  bot.telegram.sendMessage(id, `Ti pidrilla!`);
 });
 
 bot.start((ctx) => {
