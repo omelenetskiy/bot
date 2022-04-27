@@ -12,6 +12,7 @@
   "dependencies": {
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "node-cron": "^3.0.0",
     "telegraf": "^4.7.0"
   },
   "engines": {
